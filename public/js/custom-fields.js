@@ -73,7 +73,6 @@ $(document).ready(function() {
                     <td><strong>${escapeHtml(field.field_label)}</strong></td>
                     <td><code>${escapeHtml(field.field_name)}</code></td>
                     <td><span class="badge bg-primary">${fieldType}</span></td>
-                    <td>${optionsDisplay}</td>
                     <td>${statusBadge}</td>
                     <td><small class="text-muted">${formatDate(field.created_at)}</small></td>
                     <td>

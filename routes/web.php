@@ -47,14 +47,14 @@ Route::prefix('admin')
             ->name('dashboard');
 
         // Contacts (Admin)
-        // dd("aaaddd");
         Route::get('contacts/list', [ContactController::class, 'list'])->name('contacts.list');
+        Route::get('contacts/merged', [ContactController::class, 'merged'])->name('contacts.merged'); // Add this
+        
+        // Merge routes
         Route::post('contacts/merge/initiate', [ContactController::class, 'initiateMerge'])->name('contacts.merge.initiate');
         Route::post('contacts/merge/confirm', [ContactController::class, 'confirmMerge'])->name('contacts.merge.confirm');
         
         Route::resource('contacts', ContactController::class);
-        // Route::get('/contacts/list', [ContactController::class, 'list']);
-        
         
         // Custom Fields (Admin)
         Route::get('custom-fields/list', [CustomFieldController::class, 'list'])->name('custom.list');

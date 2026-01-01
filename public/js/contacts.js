@@ -78,7 +78,7 @@ $(document).ready(function() {
                     <td>${escapeHtml(contact.email)}</td>
                     <td>${escapeHtml(contact.phone)}</td>
                     <td>
-                        <span class="badge badge-${contact.gender === 'male' ? 'primary' : contact.gender === 'female' ? 'danger' : 'secondary'}">
+                        <span class="badge badge-${contact.gender === 'male' ? 'danger' : contact.gender === 'female' ? 'danger' : 'secondary'}">
                             ${contact.gender.charAt(0).toUpperCase() + contact.gender.slice(1)}
                         </span>
                     </td>

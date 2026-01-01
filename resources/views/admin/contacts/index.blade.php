@@ -9,6 +9,11 @@
         <h1 class="h3 mb-0 text-gray-800">
             <i class="fas fa-address-book"></i> Manage Contacts
         </h1>
+        <div>
+            <a href="{{ route('admin.contacts.merged') }}" class="btn btn-secondary me-2">
+                <i class="fas fa-compress-arrows-alt"></i> View Merged Contacts
+            </a>
+        </div>
         
     </div>
 

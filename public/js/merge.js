@@ -96,7 +96,7 @@ $(document).ready(function() {
                             <td>${escapeHtml(contact.phone)}</td>
                         </tr>
                         <tr>
-                            <td class="text-muted">Gender:</td>
+                            <td class="text-muted">Gender1:</td>
                             <td>${contact.gender.charAt(0).toUpperCase() + contact.gender.slice(1)}</td>
                         </tr>
                     </table>

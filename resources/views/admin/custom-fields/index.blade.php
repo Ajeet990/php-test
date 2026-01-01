@@ -36,7 +36,6 @@
                             <th>Field Label</th>
                             <th>Field Name</th>
                             <th>Field Type</th>
-                            <th>Options</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Actions</th>

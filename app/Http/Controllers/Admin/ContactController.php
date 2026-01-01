@@ -343,4 +343,22 @@ class ContactController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get merged contacts list
+     */
+    public function merged()
+    {
+        try {
+            $mergedContacts = \App\Models\Contact::with(['mergedIntoContact', 'mergedHistory'])
+                ->merged()
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
+            return view('admin.contacts.merged', compact('mergedContacts'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.contacts.index')
+                ->with('error', 'Error loading merged contacts');
+        }
+    }
 }
