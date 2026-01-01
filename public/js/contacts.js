@@ -83,6 +83,7 @@ $(document).ready(function() {
                         </span>
                     </td>
                     <td>${profileImage}</td>
+                    
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-sm btn-info view-contact" data-id="${contact.id}">
@@ -93,6 +94,9 @@ $(document).ready(function() {
                             </button>
                             <button class="btn btn-sm btn-danger delete-contact" data-id="${contact.id}">
                                 <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="btn btn-sm btn-success merge-single-contact" data-id="${contact.id}" title="Select for Merge">
+                                <i class="fas fa-compress-arrows-alt"></i>
                             </button>
                         </div>
                     </td>
@@ -505,6 +509,44 @@ $(document).ready(function() {
         $(`#${formId}`)[0].reset();
         clearValidationErrors(formId);
     });
+
+    // Single contact merge button click
+$(document).on('click', '.merge-single-contact', function() {
+    const contactId = $(this).data('id');
+    const $checkbox = $(`.contact-checkbox[value="${contactId}"]`);
+    
+    // Toggle checkbox
+    $checkbox.prop('checked', !$checkbox.is(':checked'));
+    updateSelectedContacts();
+    
+    // Visual feedback
+    if ($checkbox.is(':checked')) {
+        $(this).removeClass('btn-success').addClass('btn-primary');
+    } else {
+        $(this).removeClass('btn-primary').addClass('btn-success');
+    }
+});
+
+// Update merge button states when checkboxes change
+function updateMergeButtonStates() {
+    $('.merge-single-contact').each(function() {
+        const contactId = $(this).data('id');
+        const isChecked = $(`.contact-checkbox[value="${contactId}"]`).is(':checked');
+        
+        if (isChecked) {
+            $(this).removeClass('btn-success').addClass('btn-primary');
+        } else {
+            $(this).removeClass('btn-primary').addClass('btn-success');
+        }
+    });
+}
+
+// Update the existing updateSelectedContacts function to include button state update
+const originalUpdateSelectedContacts = updateSelectedContacts;
+updateSelectedContacts = function() {
+    originalUpdateSelectedContacts();
+    updateMergeButtonStates();
+};
 
     console.log('Contacts.js loaded successfully');
 });

@@ -49,6 +49,9 @@ Route::prefix('admin')
         // Contacts (Admin)
         // dd("aaaddd");
         Route::get('contacts/list', [ContactController::class, 'list'])->name('contacts.list');
+        Route::post('contacts/merge/initiate', [ContactController::class, 'initiateMerge'])->name('contacts.merge.initiate');
+        Route::post('contacts/merge/confirm', [ContactController::class, 'confirmMerge'])->name('contacts.merge.confirm');
+        
         Route::resource('contacts', ContactController::class);
         // Route::get('/contacts/list', [ContactController::class, 'list']);
         
