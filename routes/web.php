@@ -48,13 +48,13 @@ Route::prefix('admin')
 
         // Contacts (Admin)
         // dd("aaaddd");
-        Route::get('contacts/list', [ContactController::class, 'list'])
-            ->name('contacts.list');
+        Route::get('contacts/list', [ContactController::class, 'list'])->name('contacts.list');
         Route::resource('contacts', ContactController::class);
         // Route::get('/contacts/list', [ContactController::class, 'list']);
-
-
+        
+        
         // Custom Fields (Admin)
+        Route::get('custom-fields/list', [CustomFieldController::class, 'list'])->name('custom.list');
         Route::resource('custom-fields', CustomFieldController::class);
     });
 
