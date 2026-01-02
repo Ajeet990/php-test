@@ -343,21 +343,7 @@ $(document).ready(function() {
         }
     });
 
-    // Add keyboard hint
-    $('#mergePreviewModal').on('shown.bs.modal', function() {
-        const hint = `
-            <div class="alert alert-light text-center mb-0 mt-3">
-                <small class="text-muted">
-                    <i class="fas fa-keyboard"></i> 
-                    <strong>Keyboard Shortcuts:</strong> Press 1 or 2 to select, Enter to confirm
-                </small>
-            </div>
-        `;
-        
-        if (!$('#mergePreviewModal .alert-light').length) {
-            $('#mergePreviewModal .modal-body').append(hint);
-        }
-    });
+    
 
     console.log('Merge.js loaded successfully');
 });

@@ -16,9 +16,9 @@ use App\Http\Controllers\Admin\CustomFieldController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 // Route::get('/admin', [AdminController::class, 'index']);
 // Route::get('/contact-us', [ContactUsController::class, 'index']);
 // Route::post('/contact-us', [ContactUsController::class, 'store']);
@@ -28,7 +28,7 @@ Route::get('/', function () {
 // =======================
 // Public Routes
 // =======================
-Route::get('/contact-us', [ContactUsController::class, 'index'])
+Route::get('/', [ContactUsController::class, 'index'])
     ->name('contact.form');
 
 Route::post('/contact-us', [ContactUsController::class, 'store'])

@@ -11,7 +11,7 @@ class ContactRepository
 {
     public function getAll($filters = [], $perPage = 15)
     {
-        $query = Contact::with(['emails', 'phones', 'customFieldValues.customField'])
+        $query = Contact::with(['emails', 'phones', 'customFieldValues.customField', 'mergedContacts'])
             ->notMerged();
 
         if (!empty($filters['name'])) {

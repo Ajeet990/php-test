@@ -43,7 +43,7 @@ $(document).ready(function() {
         });
     }
 
-    // Display contacts in table
+    // In contacts.js - Update the name cell in displayContacts function
     function displayContacts(contacts) {
         const tbody = $('#contactsTableBody');
         tbody.empty();
@@ -68,22 +68,32 @@ $(document).ready(function() {
                 ? `<img src="/storage/${contact.profile_image}" class="image-preview" alt="${escapeHtml(contact.name)}">` 
                 : '<i class="fas fa-user-circle fa-2x text-muted"></i>';
 
+            // Check if contact has merged contacts into it
+            const hasMergedContacts = contact.merged_contacts && contact.merged_contacts.length > 0;
+            const mergedBadge = hasMergedContacts 
+                ? `<span class="badge bg-warning ms-2" title="${contact.merged_contacts.length} contact(s) merged into this">
+                    <i class="fas fa-compress-arrows-alt"></i> ${contact.merged_contacts.length} Merged
+                </span>` 
+                : '';
+
             const row = `
                 <tr data-contact-id="${contact.id}">
                     <td>
                         <input type="checkbox" class="contact-checkbox" value="${contact.id}">
                     </td>
                     <td>${contact.id}</td>
-                    <td>${escapeHtml(contact.name)}</td>
+                    <td>
+                        ${escapeHtml(contact.name)}
+                        ${mergedBadge}
+                    </td>
                     <td>${escapeHtml(contact.email)}</td>
                     <td>${escapeHtml(contact.phone)}</td>
                     <td>
-                        <span class="badge badge-${contact.gender === 'male' ? 'danger' : contact.gender === 'female' ? 'danger' : 'secondary'}">
+                        <span class="badge badge-${contact.gender === 'danger' ? 'primary' : contact.gender === 'female' ? 'danger' : 'secondary'}">
                             ${contact.gender.charAt(0).toUpperCase() + contact.gender.slice(1)}
                         </span>
                     </td>
                     <td>${profileImage}</td>
-                    
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-sm btn-info view-contact" data-id="${contact.id}">
