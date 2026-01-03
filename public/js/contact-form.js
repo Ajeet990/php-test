@@ -113,7 +113,7 @@ $(document).ready(function() {
     $('#profile_image').on('change', function() {
         const file = this.files[0];
         if (file) {
-            if (file.size > 2048 * 1024) {
+            if (file.size > 2048 * 1024) { // 2 MB
                 Swal.fire({
                     icon: 'warning',
                     title: 'File Too Large',
@@ -128,7 +128,7 @@ $(document).ready(function() {
     $('#additional_file').on('change', function() {
         const file = this.files[0];
         if (file) {
-            if (file.size > 5120 * 1024) {
+            if (file.size > 5120 * 1024) { // 5 MB
                 Swal.fire({
                     icon: 'warning',
                     title: 'File Too Large',

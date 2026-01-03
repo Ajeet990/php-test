@@ -54,13 +54,15 @@ class ContactUsController extends Controller
                     'errors' => $validator->errors(),
                 ], 422);
             }
+            $validated = $validator->validate();
+            // dd($request->all());
 
             // Prepare data
             $data = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'gender' => $request->gender,
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'gender' => $validated['gender'],
             ];
 
             // Handle file uploads
@@ -81,6 +83,7 @@ class ContactUsController extends Controller
                 }
             }
             $data['custom_fields'] = $customFieldsData;
+            // dd($data);
 
             // Create contact
             $contact = $this->contactService->createContact($data);

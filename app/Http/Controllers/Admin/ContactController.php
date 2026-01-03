@@ -30,8 +30,12 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $customFields = $this->customFieldService->getActiveCustomFields();
-        return view('admin.contacts.index', compact('customFields'));
+        // $customFields = $this->customFieldService->getActiveCustomFields();
+        // dd("here", $customFields);
+        // return view('admin.contacts.index', compact('customFields'));
+        // $customFields = $this->customFieldService->getActiveCustomFields();
+        // dd("here", $customFields);
+        return view('admin.contacts.index');
     }
 
     /**
@@ -40,16 +44,15 @@ class ContactController extends Controller
     public function list(Request $request)
     {
         try {
-            // dd("hhhh");
+
             $filters = [
                 'name' => $request->name,
                 'email' => $request->email,
                 'gender' => $request->gender,
             ];
             
-
-            $perPage = $request->per_page ?? 15;
-            $contacts = $this->contactService->getAllContacts($filters, $perPage);
+            $defaultPerPage = config('constants.per_page_data');
+            $contacts = $this->contactService->getAllContacts($filters, $defaultPerPage);
 
             return response()->json([
                 'success' => true,
