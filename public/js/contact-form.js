@@ -61,24 +61,40 @@ $(document).ready(function() {
                 if (xhr.status === 422) {
                     // Validation errors
                     const errors = xhr.responseJSON.errors;
+                    let errorMessages = [];
                     
                     // Display validation errors
                     $.each(errors, function(field, messages) {
                         const $field = $(`[name="${field}"]`);
-                        $field.addClass('is-invalid');
-                        $field.siblings('.invalid-feedback').text(messages[0]);
                         
-                        // For radio buttons
-                        if ($field.attr('type') === 'radio') {
-                            $field.closest('.mb-3').find('.invalid-feedback').text(messages[0]).show();
+                        if ($field.length) {
+                            $field.addClass('is-invalid');
+                            $field.siblings('.invalid-feedback').text(messages[0]);
+                            
+                            // For radio buttons
+                            if ($field.attr('type') === 'radio') {
+                                $field.closest('.mb-3').find('.invalid-feedback').text(messages[0]).show();
+                            }
                         }
+                        
+                        // Collect error messages
+                        errorMessages.push(messages[0]);
                     });
                     
-                    // Show validation error alert
+                    // Show validation error alert with specific message
+                    let alertMessage = 'Please check the form and correct the errors.';
+                    
+                    // Highlight duplicate email/phone errors
+                    if (errorMessages.some(msg => msg.includes('email'))) {
+                        alertMessage = errorMessages.find(msg => msg.includes('email'));
+                    } else if (errorMessages.some(msg => msg.includes('phone'))) {
+                        alertMessage = errorMessages.find(msg => msg.includes('phone'));
+                    }
+                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Validation Error',
-                        text: 'Please check the form and correct the errors.',
+                        text: alertMessage,
                         confirmButtonColor: '#e74a3b'
                     });
                 } else {

@@ -96,17 +96,23 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validation rules
+            // Validation rules with unique constraints
             $rules = [
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
+                'email' => 'required|email|max:255|unique:contacts,email',
+                'phone' => 'required|string|max:20|unique:contacts,phone',
                 'gender' => 'required|in:male,female,other',
                 'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'additional_file' => 'nullable|file|mimes:pdf,doc,docx,txt|max:5120',
             ];
 
-            $validator = Validator::make($request->all(), $rules);
+            // Custom error messages
+            $messages = [
+                'email.unique' => 'This email address is already registered.',
+                'phone.unique' => 'This phone number is already registered.',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
 
             if ($validator->fails()) {
                 return response()->json([
@@ -167,17 +173,23 @@ class ContactController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // Validation rules
+            // Validation rules with unique constraints (excluding current contact)
             $rules = [
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
+                'email' => 'required|email|max:255|unique:contacts,email,' . $id,
+                'phone' => 'required|string|max:20|unique:contacts,phone,' . $id,
                 'gender' => 'required|in:male,female,other',
                 'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'additional_file' => 'nullable|file|mimes:pdf,doc,docx,txt|max:5120',
             ];
 
-            $validator = Validator::make($request->all(), $rules);
+            // Custom error messages
+            $messages = [
+                'email.unique' => 'This email address is already used by another contact.',
+                'phone.unique' => 'This phone number is already used by another contact.',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
 
             if ($validator->fails()) {
                 return response()->json([

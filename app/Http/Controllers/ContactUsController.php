@@ -35,17 +35,26 @@ class ContactUsController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validation rules
+            // Validation rules with unique constraints
             $rules = [
                 'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
+                'email' => 'required|email|max:255|unique:contacts,email',
+                'phone' => 'required|string|max:20|unique:contacts,phone',
                 'gender' => 'required|in:male,female,other',
                 'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'additional_file' => 'nullable|file|mimes:pdf,doc,docx,txt|max:5120',
             ];
 
-            $validator = Validator::make($request->all(), $rules);
+            // Custom error messages
+            $messages = [
+                'email.unique' => 'This email address is already registered. Please use a different email.',
+                'phone.unique' => 'This phone number is already registered. Please use a different phone number.',
+                'email.required' => 'Email address is required.',
+                'email.email' => 'Please enter a valid email address.',
+                'phone.required' => 'Phone number is required.',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
 
             if ($validator->fails()) {
                 return response()->json([
@@ -54,8 +63,8 @@ class ContactUsController extends Controller
                     'errors' => $validator->errors(),
                 ], 422);
             }
-            $validated = $validator->validate();
-            // dd($request->all());
+
+            $validated = $validator->validated();
 
             // Prepare data
             $data = [
@@ -83,7 +92,6 @@ class ContactUsController extends Controller
                 }
             }
             $data['custom_fields'] = $customFieldsData;
-            // dd($data);
 
             // Create contact
             $contact = $this->contactService->createContact($data);
@@ -94,11 +102,37 @@ class ContactUsController extends Controller
                 'data' => $contact,
             ]);
 
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle database unique constraint errors
+            if ($e->getCode() == 23000) {
+                $message = 'A contact with this email or phone already exists.';
+                
+                if (str_contains($e->getMessage(), 'email')) {
+                    $message = 'This email address is already registered.';
+                } elseif (str_contains($e->getMessage(), 'phone')) {
+                    $message = 'This phone number is already registered.';
+                }
+                
+                return response()->json([
+                    'success' => false,
+                    'message' => $message,
+                    'errors' => [
+                        'database' => [$message]
+                    ],
+                ], 422);
+            }
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Database error occurred. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : 'Database error',
+            ], 500);
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while submitting the form. Please try again.',
-                'error' => $e->getMessage(),
+                'error' => config('app.debug') ? $e->getMessage() : 'Server error',
             ], 500);
         }
     }
